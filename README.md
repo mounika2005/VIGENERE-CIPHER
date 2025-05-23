@@ -30,7 +30,67 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
+```
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+void generateKey(const char *message, const char *key, char *newKey) {
+int msgLen = strlen(message);
+int keyLen = strlen(key);
+int i, j;
+for(i = 0, j = 0; i < msgLen; i++, j++) {
+if (j == keyLen)
+j = 0;
+newKey[i] = key[j];
+}
+newKey[msgLen] = '\0';
+}
+void encrypt(const char *message, const char *key, char *encryptedMessage) {
+int msgLen = strlen(message);
+int i;
+for(i = 0; i < msgLen; i++) {
+if (isalpha(message[i])) {
+encryptedMessage[i] = ((toupper(message[i]) + toupper(key[i])) % 26) + 'A';
+} else {
+encryptedMessage[i] = message[i];
+}
+}
+encryptedMessage[msgLen] = '\0';
+}
+void decrypt(const char *encryptedMessage, const char *key, char *decryptedMessage)
+{
+int msgLen = strlen(encryptedMessage);
+int i;
+for(i = 0; i < msgLen; i++) {
+if (isalpha(encryptedMessage[i])) {
+decryptedMessage[i] = (((toupper(encryptedMessage[i]) - toupper(key[i])) +
+26) % 26) + 'A';
+} else {
+decryptedMessage[i] = encryptedMessage[i];
+}
+}
+decryptedMessage[msgLen] = '\0';
+}
+int main() {
+char message[] = "Mounika";
+char key[] = "KEY";
+char newKey[strlen(message) + 1];
+char encryptedMessage[strlen(message) + 1];
+char decryptedMessage[strlen(message) + 1];
+generateKey(message, key, newKey);
+encrypt(message, newKey, encryptedMessage);
+decrypt(encryptedMessage, newKey, decryptedMessage);
+printf("Input Message : %s\n", message);
+printf("Encrypted Message : %s\n", encryptedMessage);
+printf("Decrypted Message : %s\n", decryptedMessage);
+return 0;
+}
+```
 
 ## OUTPUT
+![image](https://github.com/user-attachments/assets/29a71d90-b43d-4a56-afef-06016c1f6ccc)
+
+
 
 ## RESULT
+The program is executed successfully.
